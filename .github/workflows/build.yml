@@ -9,19 +9,31 @@ jobs:
   build-apk:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Dependencies
+      - name: Install Flet
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install flet
 
-      - name: Build APK
-        uses: flet-dev/flet-build-action@main
+      - name: Build Android APK
+        run: |
+          flet build apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
         with:
-          target: apk
+          name: app-release-apk
+          path: build/s/outputs/apk/release/*.apk
