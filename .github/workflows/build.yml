@@ -16,7 +16,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install flet
+
       - name: Build APK
-        uses: flet-dev/flet-build-action@v1
+        uses: flet-dev/flet-build-action@main
         with:
           target: apk
